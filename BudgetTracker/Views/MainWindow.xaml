@@ -1,0 +1,106 @@
+<Window x:Class="BudgetTracker.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="BudgetTracker — учёт бюджета"
+        Width="1050" Height="680"
+        MinWidth="850" MinHeight="560"
+        WindowStartupLocation="CenterScreen"
+        Background="#F4F6F8">
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,14">
+            <TextBlock Text="BudgetTracker" FontSize="28" FontWeight="Bold"/>
+            <TextBlock Text="Доходы, расходы и баланс в одном окне"
+                       Foreground="#68707A" FontSize="14"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1" Margin="0,0,0,14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="White" CornerRadius="10" Padding="16">
+                <StackPanel>
+                    <TextBlock Text="Доходы" Foreground="#68707A"/>
+                    <TextBlock Text="{Binding TotalIncome, StringFormat={}{0:N2} ₽}"
+                               FontSize="23" FontWeight="SemiBold" Foreground="#18864B"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2" Background="White" CornerRadius="10" Padding="16">
+                <StackPanel>
+                    <TextBlock Text="Расходы" Foreground="#68707A"/>
+                    <TextBlock Text="{Binding TotalExpense, StringFormat={}{0:N2} ₽}"
+                               FontSize="23" FontWeight="SemiBold" Foreground="#B63A3A"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="4" Background="White" CornerRadius="10" Padding="16">
+                <StackPanel>
+                    <TextBlock Text="Баланс" Foreground="#68707A"/>
+                    <TextBlock Text="{Binding Balance, StringFormat={}{0:N2} ₽}"
+                               FontSize="23" FontWeight="SemiBold" Foreground="#2A5E9A"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="2" Background="White" CornerRadius="10" Padding="12" Margin="0,0,0,12">
+            <DockPanel LastChildFill="False">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" VerticalAlignment="Center">
+                    <TextBlock Text="С:" VerticalAlignment="Center" Margin="4,0,6,0"/>
+                    <DatePicker SelectedDate="{Binding DateFrom}" Width="145" Margin="0"/>
+                    <TextBlock Text="По:" VerticalAlignment="Center" Margin="12,0,6,0"/>
+                    <DatePicker SelectedDate="{Binding DateTo}" Width="145" Margin="0"/>
+                    <Button Content="Применить" Command="{Binding RefreshCommand}" Margin="12,0,0,0"/>
+                    <Button Content="Сбросить" Command="{Binding ResetFilterCommand}" Margin="4,0,0,0"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <Border Grid.Row="3" Background="White" CornerRadius="10" Padding="8">
+            <DataGrid ItemsSource="{Binding Transactions}"
+                      SelectedItem="{Binding SelectedTransaction}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      CanUserAddRows="False"
+                      GridLinesVisibility="Horizontal"
+                      HeadersVisibility="Column"
+                      SelectionMode="Single"
+                      BorderThickness="0"
+                      RowHeight="34">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Дата" Width="120"
+                                        Binding="{Binding Date, StringFormat={}{0:dd.MM.yyyy}}"/>
+                    <DataGridTextColumn Header="Тип" Width="100" Binding="{Binding TypeDisplay}"/>
+                    <DataGridTextColumn Header="Категория" Width="170" Binding="{Binding CategoryName}"/>
+                    <DataGridTextColumn Header="Комментарий" Width="*" Binding="{Binding Note}"/>
+                    <DataGridTextColumn Header="Сумма, ₽" Width="140"
+                                        Binding="{Binding Amount, StringFormat={}{0:N2}}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <DockPanel Grid.Row="4" Margin="0,12,0,0">
+            <TextBlock DockPanel.Dock="Left"
+                       Text="Данные хранятся локально в SQLite"
+                       Foreground="#7A828C"
+                       VerticalAlignment="Center"/>
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <Button Content="Добавить" Command="{Binding AddCommand}"/>
+                <Button Content="Изменить" Command="{Binding EditCommand}"/>
+                <Button Content="Удалить" Command="{Binding DeleteCommand}"/>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,52 @@
+<Window x:Class="BudgetTracker.Views.TransactionEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding WindowTitle}"
+        Width="430" Height="510"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Background="#F4F6F8">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="{Binding WindowTitle}" FontSize="24" FontWeight="Bold" Margin="0,0,0,14"/>
+
+        <StackPanel Grid.Row="1">
+            <TextBlock Text="Сумма, ₽" FontWeight="SemiBold"/>
+            <TextBox Text="{Binding AmountText, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2">
+            <TextBlock Text="Дата" FontWeight="SemiBold"/>
+            <DatePicker SelectedDate="{Binding Date}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="3">
+            <TextBlock Text="Категория" FontWeight="SemiBold"/>
+            <ComboBox ItemsSource="{Binding Categories}"
+                      SelectedItem="{Binding SelectedCategory}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="4">
+            <TextBlock Text="Комментарий" FontWeight="SemiBold"/>
+            <TextBox Text="{Binding Note, UpdateSourceTrigger=PropertyChanged}"
+                     Height="70" AcceptsReturn="True" TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="5" Text="{Binding ErrorMessage}"
+                   Foreground="#B63A3A" TextWrapping="Wrap" Margin="0,4,0,0"/>
+
+        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Отмена" Command="{Binding CancelCommand}" IsCancel="True"/>
+            <Button Content="Сохранить" Command="{Binding SaveCommand}" IsDefault="True"/>
+        </StackPanel>
+    </Grid>
+</Window>
